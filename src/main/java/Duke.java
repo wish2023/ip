@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Duke {
     public static void main(String[] args) {
 //        String logo = " ____        _        \n"
@@ -6,8 +8,19 @@ public class Duke {
 //                + "| |_| | |_| |   <  __/\n"
 //                + "|____/ \\__,_|_|\\_\\___|\n";
 //        System.out.println("Hello from\n" + logo);
-        System.out.println("Hello! I'm Duke");
-        System.out.println("What can I do for you?");
-        System.out.println("Bye. Hope to see you again soon!");
+        Scanner in = new Scanner(System.in);
+        String line = "initialising";
+
+        System.out.println("Hey it's your favorite chatbot buddy!");
+        System.out.println("How can I assist you today?");
+
+        while (!line.equals("bye")) {
+            line = in.nextLine();
+            if (!line.equals("bye")) {
+                System.out.println(line);
+            }
+        }
+
+        System.out.println("Bye see you SOON!");
     }
 }
