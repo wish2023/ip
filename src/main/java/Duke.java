@@ -1,18 +1,26 @@
 import java.util.Scanner;
 
 public class Duke {
-    public static String[] list = new String[100];
+    public static Task[] list = new Task[100];
     public static int listSize = 0;
 
-    public static void addToList(String task) {
+    public static void addToList(Task task) {
         list[listSize++] = task;
-        System.out.printf("Okay! I have added %s\n", task);
+        System.out.printf("Okay! I have added %s\n", task.getDescription());
     }
 
     public static void displayList() {
+        System.out.println("Here's your TODO");
         for (int i = 0; i < listSize; i++) {
-            System.out.printf("%d. %s\n", i + 1, list[i]);
+            System.out.printf("%d.[%s] %s\n", i + 1,list[i].getStatusIcon(), list[i].getDescription());
         }
+    }
+
+    public static void updateTask(String line) {
+        int taskNumber = Integer.parseInt(line.replace("done ",""));
+        list[taskNumber - 1].setDone();
+        System.out.println("I have marked your task as done!");
+        System.out.printf("[%s] %s\n", list[taskNumber - 1].getStatusIcon(), list[taskNumber - 1].getDescription());
     }
 
 
@@ -38,11 +46,16 @@ public class Duke {
                 displayList();
                 break;
             default:
-                addToList(line);
+                if (line.contains("done ")) {
+                    updateTask(line);
+                }
+                else {
+                    Task t = new Task(line);
+                    addToList(t);
+                }
                 break;
             }
         }
-
         System.out.println("Bye see you SOON!");
     }
 }
