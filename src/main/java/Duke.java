@@ -20,7 +20,8 @@ public class Duke {
         int taskNumber = Integer.parseInt(line.replace("done ",""));
         list[taskNumber - 1].setDone();
         System.out.println("I have marked your task as done!");
-        System.out.printf("[%s] %s\n", list[taskNumber - 1].getStatusIcon(), list[taskNumber - 1].getDescription());
+        System.out.printf("[%s] %s\n", list[taskNumber - 1].getStatusIcon(),
+                list[taskNumber - 1].getDescription());
     }
 
 
@@ -48,8 +49,7 @@ public class Duke {
             default:
                 if (line.contains("done ")) {
                     updateTask(line);
-                }
-                else {
+                } else {
                     Task t = new Task(line);
                     addToList(t);
                 }
