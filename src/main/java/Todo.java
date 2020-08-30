@@ -5,6 +5,6 @@ public class Todo extends Task {
     }
 
     public String toString() {
-        return String.format("[T]" + super.toString());
+        return "[T]" + super.toString();
     }
 }

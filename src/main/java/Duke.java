@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 public class Duke {
-    private static Task[] list = new Task[100];
+    public static final String INITIALISING = "initialising";
+    public static final int MAX_LIST_SIZE = 100;
+    private static Task[] list = new Task[MAX_LIST_SIZE];
     private static int listSize = 0;
 
     public static void addToList(Task task) {
@@ -33,7 +35,7 @@ public class Duke {
     public static void updateList(String line) {
         int dividerPosition = line.indexOf(" ");
         String command = line.substring(0, dividerPosition);
-        String task = line.substring(dividerPosition + 1, line.length());
+        String task = line.substring(dividerPosition + 1);
 
         if (command.equals("done")) {
             markTaskAsDone(task);
@@ -44,32 +46,21 @@ public class Duke {
         } else if (command.equals("deadline")) {
             int byPosition = line.indexOf("/by");
             String deadlineTask = line.substring(dividerPosition + 1, byPosition - 1);
-            String by = line.substring(byPosition + 4, line.length());
+            String by = line.substring(byPosition + 4);
             addToList(new Deadline(deadlineTask, by));
 
         } else if (command.equals("event")) {
             int atPosition = line.indexOf("/at");
             String eventTask = line.substring(dividerPosition + 1, atPosition - 1);
-            String date = line.substring(atPosition + 4, line.length());
+            String date = line.substring(atPosition + 4);
             addToList(new Event(eventTask, date));
+
         } else {
             addToList(new Task(task));
         }
     }
 
-
-    public static void main(String[] args) {
-//        String logo = " ____        _        \n"
-//                + "|  _ \\ _   _| | _____ \n"
-//                + "| | | | | | | |/ / _ \\\n"
-//                + "| |_| | |_| |   <  __/\n"
-//                + "|____/ \\__,_|_|\\_\\___|\n";
-//        System.out.println("Hello from\n" + logo);
-        Scanner in = new Scanner(System.in);
-        String line = "initialising";
-
-        printHello();
-
+    public static void runBot(Scanner in, String line) {
         while (!line.equals("bye")) {
             line = in.nextLine();
             switch (line) {
@@ -83,7 +74,6 @@ public class Duke {
                 break;
             }
         }
-        printGoodbye();
     }
 
     public static void printGoodbye() {
@@ -95,5 +85,19 @@ public class Duke {
         System.out.println("How can I assist you today?");
     }
 
+
+    public static void main(String[] args) {
+//        String logo = " ____        _        \n"
+//                + "|  _ \\ _   _| | _____ \n"
+//                + "| | | | | | | |/ / _ \\\n"
+//                + "| |_| | |_| |   <  __/\n"
+//                + "|____/ \\__,_|_|\\_\\___|\n";
+//        System.out.println("Hello from\n" + logo);
+        Scanner in = new Scanner(System.in);
+        String line = INITIALISING;
+        printHello();
+        runBot(in, line);
+        printGoodbye();
+    }
 
 }
