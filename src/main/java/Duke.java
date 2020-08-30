@@ -12,7 +12,7 @@ public class Duke {
     public static void displayList() {
         System.out.println("Here's your TODO");
         for (int i = 0; i < listSize; i++) {
-            System.out.printf("%d.[%s] %s\n", i + 1,list[i].getStatusIcon(), list[i].getDescription());
+            System.out.printf("%d.%s\n", i + 1,list[i]);
         }
     }
 
@@ -22,6 +22,15 @@ public class Duke {
         System.out.println("I have marked your task as done!");
         System.out.printf("[%s] %s\n", list[taskNumber - 1].getStatusIcon(),
                 list[taskNumber - 1].getDescription());
+    }
+
+    public static void updateList(String line) {
+        if (line.contains("done ")) {
+            updateTask(line);
+        } else {
+            Task t = new Task(line);
+            addToList(t);
+        }
     }
 
 
@@ -35,8 +44,7 @@ public class Duke {
         Scanner in = new Scanner(System.in);
         String line = "initialising";
 
-        System.out.println("Hey it's your favorite chatbot buddy!");
-        System.out.println("How can I assist you today?");
+        printMessage();
 
         while (!line.equals("bye")) {
             line = in.nextLine();
@@ -47,15 +55,17 @@ public class Duke {
                 displayList();
                 break;
             default:
-                if (line.contains("done ")) {
-                    updateTask(line);
-                } else {
-                    Task t = new Task(line);
-                    addToList(t);
-                }
+                updateList(line);
                 break;
             }
         }
         System.out.println("Bye see you SOON!");
     }
+
+    public static void printMessage() {
+        System.out.println("Hey it's your favorite chatbot buddy!");
+        System.out.println("How can I assist you today?");
+    }
+
+
 }
