@@ -1,12 +1,19 @@
 import java.util.Scanner;
 
 public class Duke {
-    public static Task[] list = new Task[100];
-    public static int listSize = 0;
+    private static Task[] list = new Task[100];
+    private static int listSize = 0;
 
     public static void addToList(Task task) {
         list[listSize++] = task;
-        System.out.printf("Okay! I have added %s\n", task.getDescription());
+        System.out.println("Okay! I have added this:");
+        System.out.printf("\t%s\n", task);
+        System.out.printf("Now you have %d task%s in the list.\n", getListSize(),
+                (getListSize() == 1)? "": "s");
+    }
+
+    public static int getListSize() {
+        return listSize;
     }
 
     public static void displayList() {
@@ -16,20 +23,37 @@ public class Duke {
         }
     }
 
-    public static void updateTask(String line) {
-        int taskNumber = Integer.parseInt(line.replace("done ",""));
+    public static void markTaskAsDone(String task) {
+        int taskNumber = Integer.parseInt(task);
         list[taskNumber - 1].setDone();
         System.out.println("I have marked your task as done!");
-        System.out.printf("[%s] %s\n", list[taskNumber - 1].getStatusIcon(),
-                list[taskNumber - 1].getDescription());
+        System.out.printf("\t%s\n", list[taskNumber - 1]);
     }
 
     public static void updateList(String line) {
-        if (line.contains("done ")) {
-            updateTask(line);
+        int dividerPosition = line.indexOf(" ");
+        String command = line.substring(0, dividerPosition);
+        String task = line.substring(dividerPosition + 1, line.length());
+
+        if (command.equals("done")) {
+            markTaskAsDone(task);
+
+        } else if (command.equals("todo")) {
+            addToList(new Todo(task));
+
+        } else if (command.equals("deadline")) {
+            int byPosition = line.indexOf("/by");
+            String deadlineTask = line.substring(dividerPosition + 1, byPosition - 1);
+            String by = line.substring(byPosition + 4, line.length());
+            addToList(new Deadline(deadlineTask, by));
+
+        } else if (command.equals("event")) {
+            int atPosition = line.indexOf("/at");
+            String eventTask = line.substring(dividerPosition + 1, atPosition - 1);
+            String date = line.substring(atPosition + 4, line.length());
+            addToList(new Event(eventTask, date));
         } else {
-            Task t = new Task(line);
-            addToList(t);
+            addToList(new Task(task));
         }
     }
 
@@ -44,7 +68,7 @@ public class Duke {
         Scanner in = new Scanner(System.in);
         String line = "initialising";
 
-        printMessage();
+        printHello();
 
         while (!line.equals("bye")) {
             line = in.nextLine();
@@ -59,10 +83,14 @@ public class Duke {
                 break;
             }
         }
+        printGoodbye();
+    }
+
+    public static void printGoodbye() {
         System.out.println("Bye see you SOON!");
     }
 
-    public static void printMessage() {
+    public static void printHello() {
         System.out.println("Hey it's your favorite chatbot buddy!");
         System.out.println("How can I assist you today?");
     }
