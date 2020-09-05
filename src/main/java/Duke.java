@@ -29,8 +29,18 @@ public class Duke {
         System.out.printf("\t%s\n", list[taskNumber - 1]);
     }
 
-    public static void updateList(String line) {
-        int dividerPosition = line.indexOf(" ");
+    public static void updateList(String line, Scanner in) throws DukeException {
+        int dividerPosition = 0;
+        while (true) {
+            try {
+                dividerPosition = splitCommandAndTask(line, " ");
+                break;
+            } catch (DukeException e) {
+                System.out.println("Whoa! Please enter a command AND a task");
+                line = in.nextLine();
+            }
+        }
+
         String command = line.substring(0, dividerPosition);
         String task = line.substring(dividerPosition + 1);
 
@@ -41,23 +51,32 @@ public class Duke {
             addToList(new Todo(task));
 
         } else if (command.equals("deadline")) {
-            int byPosition = line.indexOf("/by");
+            int byPosition = splitCommandAndTask(line, "/by");
             String deadlineTask = line.substring(dividerPosition + 1, byPosition - 1);
             String by = line.substring(byPosition + 4);
             addToList(new Deadline(deadlineTask, by));
 
         } else if (command.equals("event")) {
-            int atPosition = line.indexOf("/at");
+            int atPosition = splitCommandAndTask(line, "/at");
             String eventTask = line.substring(dividerPosition + 1, atPosition - 1);
             String date = line.substring(atPosition + 4);
             addToList(new Event(eventTask, date));
 
         } else {
-            addToList(new Task(task));
+            // System.out.println("Whoops I'm sorry I don't know what that means");
+            System.out.println("To be implemented");
         }
     }
 
-    public static void runBot(Scanner in, String line) {
+    public static int splitCommandAndTask(String line, String keyword) throws DukeException {
+        if (!line.contains(keyword) && keyword.equals(" ")) {
+            throw new DukeException();
+        }
+        return line.indexOf(keyword);
+    }
+
+    
+    public static void runBot(Scanner in, String line) throws DukeException {
         while (!line.equals("bye")) {
             line = in.nextLine();
             switch (line) {
@@ -67,7 +86,7 @@ public class Duke {
                 displayList();
                 break;
             default:
-                updateList(line);
+                updateList(line, in);
                 break;
             }
         }
@@ -83,7 +102,7 @@ public class Duke {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
 //        String logo = " ____        _        \n"
 //                + "|  _ \\ _   _| | _____ \n"
 //                + "| | | | | | | |/ / _ \\\n"
