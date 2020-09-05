@@ -10,13 +10,10 @@ public class Duke {
         list[listSize++] = task;
         System.out.println("Okay! I have added this:");
         System.out.printf("\t%s\n", task);
-        System.out.printf("Now you have %d task%s in the list.\n", getListSize(),
-                (getListSize() == 1)? "": "s");
+        System.out.printf("Now you have %d task%s in the list.\n", listSize,
+                (listSize == 1)? "": "s");
     }
 
-    public static int getListSize() {
-        return listSize;
-    }
 
     public static void displayList() {
         System.out.println("Here's your TODO");
