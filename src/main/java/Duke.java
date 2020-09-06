@@ -29,18 +29,15 @@ public class Duke {
         System.out.printf("\t%s\n", list[taskNumber - 1]);
     }
 
-    public static void updateList(String line, Scanner in) throws DukeException {
+    public static void updateList(String line) throws DukeException {
         int dividerPosition = 0;
-        while (true) {
-            try {
-                dividerPosition = splitCommandAndTask(line, " ");
-                break;
-            } catch (DukeException e) {
-                System.out.println("Whoa! Please enter a command AND a task");
-                line = in.nextLine();
-            }
-        }
 
+        try {
+            dividerPosition = splitCommandAndTask(line, " ");
+        } catch (DukeException e) {
+            System.out.println("Whoa! Please enter a command AND a task");
+            return;
+        }
         String command = line.substring(0, dividerPosition);
         String task = line.substring(dividerPosition + 1);
 
@@ -51,25 +48,38 @@ public class Duke {
             addToList(new Todo(task));
 
         } else if (command.equals("deadline")) {
-            int byPosition = splitCommandAndTask(line, "/by");
+            int byPosition = 0;
+
+            try {
+                byPosition = splitCommandAndTask(line, "/by");
+            } catch (DukeException e) {
+                System.out.println("Please follow the deadline format: deadline *task* /by *date*");
+                return;
+            }
             String deadlineTask = line.substring(dividerPosition + 1, byPosition - 1);
             String by = line.substring(byPosition + 4);
             addToList(new Deadline(deadlineTask, by));
 
         } else if (command.equals("event")) {
-            int atPosition = splitCommandAndTask(line, "/at");
+            int atPosition = 0;
+
+            try {
+                atPosition = splitCommandAndTask(line, "/at");
+            } catch (DukeException e) {
+                System.out.println("Please follow the event format: event *task* /at *date*");
+                return;
+            }
             String eventTask = line.substring(dividerPosition + 1, atPosition - 1);
             String date = line.substring(atPosition + 4);
             addToList(new Event(eventTask, date));
 
         } else {
-            // System.out.println("Whoops I'm sorry I don't know what that means");
-            System.out.println("To be implemented");
+            System.out.println("Whoops you may have typed a wrong command");
         }
     }
 
     public static int splitCommandAndTask(String line, String keyword) throws DukeException {
-        if (!line.contains(keyword) && keyword.equals(" ")) {
+        if (!line.contains(keyword)) {
             throw new DukeException();
         }
         return line.indexOf(keyword);
@@ -86,7 +96,7 @@ public class Duke {
                 displayList();
                 break;
             default:
-                updateList(line, in);
+                updateList(line);
                 break;
             }
         }
