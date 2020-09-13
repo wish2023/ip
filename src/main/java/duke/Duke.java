@@ -1,15 +1,18 @@
 package duke;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
     public static final String INITIALISING = "initialising";
     public static final int MAX_LIST_SIZE = 100;
-    private static Task[] list = new Task[MAX_LIST_SIZE];
+    //private static Task[] tasks = new Task[MAX_LIST_SIZE];
+    private static ArrayList<Task> tasks = new ArrayList<>(MAX_LIST_SIZE);
     private static int listSize = 0;
 
     public static void addToList(Task task) {
-        list[listSize++] = task;
+        listSize++;
+        tasks.add(task);
         System.out.println("Okay! I have added this:");
         System.out.printf("\t%s\n", task);
         System.out.printf("Now you have %d task%s in the list.\n", listSize,
@@ -20,15 +23,19 @@ public class Duke {
     public static void displayList() {
         System.out.println("Here's your TODO");
         for (int i = 0; i < listSize; i++) {
-            System.out.printf("%d.%s\n", i + 1,list[i]);
+            System.out.printf("%d.%s\n", i + 1, tasks.get(i));
         }
     }
 
     public static void markTaskAsDone(String task) {
         int taskNumber = Integer.parseInt(task);
-        list[taskNumber - 1].setDone();
+        tasks.get(taskNumber - 1).setDone();
         System.out.println("I have marked your task as done!");
-        System.out.printf("\t%s\n", list[taskNumber - 1]);
+        System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
+    }
+
+    public static void deleteTask(String task) {
+
     }
 
     public static void updateList(String line) throws DukeException {
@@ -48,6 +55,10 @@ public class Duke {
 
         } else if (command.equals("todo")) {
             addToList(new Todo(task));
+
+        } else if (command.equals(("delete"))) {
+           // deleteTask(task);
+            System.out.println("deleting");
 
         } else if (command.equals("deadline")) {
             int byPosition = 0;
