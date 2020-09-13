@@ -1,12 +1,91 @@
 package duke;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
 
 public class Duke {
     public static final String INITIALISING = "initialising";
     public static final int MAX_LIST_SIZE = 100;
+    public static final String FILEPATH = "data/duke.txt";
+    public static final String DIRPATH = "data";
     private static Task[] list = new Task[MAX_LIST_SIZE];
     private static int listSize = 0;
+
+
+    public static void writeToFile() throws IOException {
+        FileWriter fw = new FileWriter(FILEPATH);
+
+        for (int i = 0; i < listSize; i++) {
+            String line = list[i].toString();
+            fw.write((i + 1) + ". " + line + "\n");
+        }
+
+        fw.close();
+    }
+
+    public static void initialiseList() throws FileNotFoundException, DukeException {
+        File f = new File(FILEPATH); // create a File for the given file path
+        Scanner s = new Scanner(f); // create a Scanner using the File as the source
+        while (s.hasNext()) {
+            addToList(s.nextLine());
+        }
+    }
+
+    private static void addToList(String line) throws DukeException {
+        int taskTypePosition = splitCommandAndTask(line, ". [");
+        char taskType = line.charAt(taskTypePosition + 3);
+        char statusIcon = line.charAt(taskTypePosition + 6);
+
+        switch (taskType) {
+        case 'T':
+            String task = line.substring(taskTypePosition + 9);
+            addToList(new Todo(task, statusIcon));
+            break;
+        case 'D':
+            int byPosition = splitCommandAndTask(line, "(by");
+            String deadlineTask = line.substring(taskTypePosition + 9, byPosition - 1);
+            String by = line.substring(byPosition + 5, line.length() - 1);
+            addToList(new Deadline(deadlineTask, statusIcon, by));
+            break;
+        case 'E':
+            int atPosition = splitCommandAndTask(line, "(at");
+            String eventTask = line.substring(taskTypePosition + 9, atPosition - 1);
+            String at = line.substring(atPosition + 5, line.length() - 1);
+            addToList(new Event(eventTask, statusIcon, at));
+            break;
+        default:
+            break;
+        }
+    }
+
+    public static void save() {
+        try {
+            File dir = new File((DIRPATH));
+            if (!dir.isDirectory()) {
+                dir.mkdir();
+            }
+
+            File f = new File(FILEPATH);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            writeToFile();
+
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
+
+    public static void boot() throws DukeException {
+        try {
+            initialiseList();
+        } catch (FileNotFoundException e) {
+            System.out.println("No prior list found. Time to start a new list!");
+        }
+    }
 
     public static void addToList(Task task) {
         list[listSize++] = task;
@@ -123,9 +202,11 @@ public class Duke {
 //        System.out.println("Hello from\n" + logo);
         Scanner in = new Scanner(System.in);
         String line = INITIALISING;
+        boot();
         printHello();
         runBot(in, line);
         printGoodbye();
+        save();
     }
 
 }
