@@ -1,0 +1,4 @@
+1. [T][✓] read book
+2. [T][✘] that
+3. [E][✘] project (at: tuesday)
+4. [D][✓] finish this (by: sat)

@@ -8,6 +8,11 @@ public class Event extends Task {
         this.at = at;
     }
 
+    public Event(String description, char statusIcon, String at) {
+        super(description, statusIcon);
+        this.at = at;
+    }
+
     public String toString() {
         return "[E]" + super.toString() + " (at: " + at + ")";
     }
