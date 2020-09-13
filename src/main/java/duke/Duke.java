@@ -35,7 +35,13 @@ public class Duke {
     }
 
     public static void deleteTask(String task) {
-
+        int taskNumber = Integer.parseInt(task);
+        System.out.println("I have deleted this task!");
+        System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
+        tasks.remove(taskNumber - 1);
+        listSize--;
+        System.out.printf("Now you have %d task%s in the list.\n", listSize,
+                (listSize == 1)? "": "s");
     }
 
     public static void updateList(String line) throws DukeException {
@@ -57,8 +63,7 @@ public class Duke {
             addToList(new Todo(task));
 
         } else if (command.equals(("delete"))) {
-           // deleteTask(task);
-            System.out.println("deleting");
+            deleteTask(task);
 
         } else if (command.equals("deadline")) {
             int byPosition = 0;
