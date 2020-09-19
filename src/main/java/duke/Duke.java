@@ -9,32 +9,34 @@ import java.io.File;
 import java.io.IOException;
 
 public class Duke {
-    public static final String INITIALISING = "initialising";
+    public static final String INITIALISE_MESSAGE = "initialising";
     public static final int MAX_LIST_SIZE = 100;
     private static ArrayList<Task> tasks = new ArrayList<>(MAX_LIST_SIZE);
-    public static final String FILEPATH = "data/duke.txt";
-    public static final String DIRPATH = "data";
+    public static final String FILE_PATH = "data/duke.txt";
+    public static final String DIRECTORY_PATH = "data";
     private static int listSize = 0;
 
 
     public static void writeToFile() throws IOException {
-        FileWriter fw = new FileWriter(FILEPATH);
+        FileWriter filewriter = new FileWriter(FILE_PATH);
 
         for (int i = 0; i < listSize; i++) {
             String line = tasks.get(i).toString();
-            fw.write((i + 1) + ". " + line + "\n");
+            filewriter.write((i + 1) + ". " + line + "\n");
         }
 
-        fw.close();
+        filewriter.close();
     }
+
 
     public static void initialiseList() throws FileNotFoundException, DukeException {
-        File f = new File(FILEPATH); // create a File for the given file path
-        Scanner s = new Scanner(f); // create a Scanner using the File as the source
-        while (s.hasNext()) {
-            addToList(s.nextLine());
+        File file = new File(FILE_PATH);
+        Scanner fileScanner = new Scanner(file);
+        while (fileScanner.hasNext()) {
+            addToList(fileScanner.nextLine());
         }
     }
+
 
     private static void addToList(String line) throws DukeException {
         int taskTypePosition = splitCommandAndTask(line, ". [");
@@ -63,16 +65,17 @@ public class Duke {
         }
     }
 
+
     public static void save() {
         try {
-            File dir = new File((DIRPATH));
-            if (!dir.isDirectory()) {
-                dir.mkdir();
+            File directory = new File((DIRECTORY_PATH));
+            if (!directory.isDirectory()) {
+                directory.mkdir();
             }
 
-            File f = new File(FILEPATH);
-            if (!f.exists()) {
-                f.createNewFile();
+            File file = new File(FILE_PATH);
+            if (!file.exists()) {
+                file.createNewFile();
             }
             writeToFile();
 
@@ -80,6 +83,7 @@ public class Duke {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
 
     public static void boot() throws DukeException {
         try {
@@ -89,9 +93,10 @@ public class Duke {
         }
     }
 
+
     public static void addToList(Task task) {
         listSize++;
-        tasks.add(task);
+        tasks.add(task); // Add try here
         System.out.println("Okay! I have added this:");
         System.out.printf("\t%s\n", task);
         System.out.printf("Now you have %d task%s in the list.\n", listSize,
@@ -106,12 +111,14 @@ public class Duke {
         }
     }
 
+
     public static void markTaskAsDone(String task) {
         int taskNumber = Integer.parseInt(task);
         tasks.get(taskNumber - 1).setDone();
         System.out.println("I have marked your task as done!");
         System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
     }
+
 
     public static void deleteTask(String task) {
         int taskNumber = Integer.parseInt(task);
@@ -122,6 +129,7 @@ public class Duke {
         System.out.printf("Now you have %d task%s in the list.\n", listSize,
                 (listSize == 1)? "": "s");
     }
+
 
     public static void updateList(String line) throws DukeException {
         int dividerPosition = 0;
@@ -175,6 +183,7 @@ public class Duke {
         }
     }
 
+
     public static int splitCommandAndTask(String line, String keyword) throws DukeException {
         if (!line.contains(keyword)) {
             throw new DukeException();
@@ -199,9 +208,11 @@ public class Duke {
         }
     }
 
+
     public static void printGoodbye() {
         System.out.println("Bye see you SOON!");
     }
+
 
     public static void printHello() {
         System.out.println("Hey it's your favorite chatbot buddy!");
@@ -210,19 +221,12 @@ public class Duke {
 
 
     public static void main(String[] args) throws DukeException {
-//        String logo = " ____        _        \n"
-//                + "|  _ \\ _   _| | _____ \n"
-//                + "| | | | | | | |/ / _ \\\n"
-//                + "| |_| | |_| |   <  __/\n"
-//                + "|____/ \\__,_|_|\\_\\___|\n";
-//        System.out.println("Hello from\n" + logo);
         Scanner in = new Scanner(System.in);
-        String line = INITIALISING;
+        String line = INITIALISE_MESSAGE;
         boot();
         printHello();
         runBot(in, line);
         printGoodbye();
         save();
     }
-
 }
