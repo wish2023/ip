@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public class Duke {
     public static final String INITIALISE_MESSAGE = "initialising";
-    public static final int MAX_LIST_SIZE = 100;
-    private static ArrayList<Task> tasks = new ArrayList<>(MAX_LIST_SIZE);
+    private static ArrayList<Task> tasks = new ArrayList<>();
     public static final String FILE_PATH = "data/duke.txt";
     public static final String DIRECTORY_PATH = "data";
+    public static final boolean PRINT_DETAILS = true;
     private static int listSize = 0;
 
 
@@ -33,12 +33,12 @@ public class Duke {
         File file = new File(FILE_PATH);
         Scanner fileScanner = new Scanner(file);
         while (fileScanner.hasNext()) {
-            addToList(fileScanner.nextLine());
+            addStringToList(fileScanner.nextLine());
         }
     }
 
 
-    private static void addToList(String line) throws DukeException {
+    private static void addStringToList(String line) throws DukeException {
         int taskTypePosition = splitCommandAndTask(line, ". [");
         char taskType = line.charAt(taskTypePosition + 3);
         char statusIcon = line.charAt(taskTypePosition + 6);
@@ -46,19 +46,19 @@ public class Duke {
         switch (taskType) {
         case 'T':
             String task = line.substring(taskTypePosition + 9);
-            addToList(new Todo(task, statusIcon));
+            addToList(new Todo(task, statusIcon), !PRINT_DETAILS);
             break;
         case 'D':
             int byPosition = splitCommandAndTask(line, "(by");
             String deadlineTask = line.substring(taskTypePosition + 9, byPosition - 1);
             String by = line.substring(byPosition + 5, line.length() - 1);
-            addToList(new Deadline(deadlineTask, statusIcon, by));
+            addToList(new Deadline(deadlineTask, statusIcon, by), !PRINT_DETAILS);
             break;
         case 'E':
             int atPosition = splitCommandAndTask(line, "(at");
             String eventTask = line.substring(taskTypePosition + 9, atPosition - 1);
             String at = line.substring(atPosition + 5, line.length() - 1);
-            addToList(new Event(eventTask, statusIcon, at));
+            addToList(new Event(eventTask, statusIcon, at), !PRINT_DETAILS);
             break;
         default:
             break;
@@ -94,13 +94,17 @@ public class Duke {
     }
 
 
-    public static void addToList(Task task) {
+    public static void addToList(Task task, boolean isPrintable) {
         listSize++;
         tasks.add(task); // Add try here
-        System.out.println("Okay! I have added this:");
-        System.out.printf("\t%s\n", task);
-        System.out.printf("Now you have %d task%s in the list.\n", listSize,
-                (listSize == 1)? "": "s");
+
+        if (isPrintable) {
+            System.out.println("Okay! I have added this:");
+            System.out.printf("\t%s\n", task);
+            System.out.printf("Now you have %d task%s in the list.\n", listSize,
+                    (listSize == 1) ? "" : "s");
+        }
+
     }
 
 
@@ -147,7 +151,7 @@ public class Duke {
             markTaskAsDone(task);
 
         } else if (command.equals("todo")) {
-            addToList(new Todo(task));
+            addToList(new Todo(task), PRINT_DETAILS);
 
         } else if (command.equals(("delete"))) {
             deleteTask(task);
@@ -163,7 +167,7 @@ public class Duke {
             }
             String deadlineTask = line.substring(dividerPosition + 1, byPosition - 1);
             String by = line.substring(byPosition + 4);
-            addToList(new Deadline(deadlineTask, by));
+            addToList(new Deadline(deadlineTask, by), PRINT_DETAILS);
 
         } else if (command.equals("event")) {
             int atPosition = 0;
@@ -176,7 +180,7 @@ public class Duke {
             }
             String eventTask = line.substring(dividerPosition + 1, atPosition - 1);
             String date = line.substring(atPosition + 4);
-            addToList(new Event(eventTask, date));
+            addToList(new Event(eventTask, date), PRINT_DETAILS);
 
         } else {
             System.out.println("Whoops you may have typed a wrong command");
