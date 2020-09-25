@@ -27,14 +27,14 @@ public class Ui {
                 displayList(taskList);
                 break;
             default:
-                updateList(line, taskList);
+                manageList(line, taskList);
                 break;
             }
         }
     }
 
-    private static void updateList(String line, TaskList taskList) throws DukeException {
-        taskList.updateTasks(line);
+    private static void manageList(String line, TaskList taskList) throws DukeException {
+        taskList.manageTask(line);
     }
 
     public static void displayList(TaskList taskList) {
