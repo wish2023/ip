@@ -3,7 +3,7 @@ package duke;
 import java.util.ArrayList;
 
 public class TaskList {
-    private static ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
 
 
@@ -21,8 +21,22 @@ public class TaskList {
     /**
      * Prints every task in the task list
      */
-    public static void displayList() {
+    public void displayList() {
         System.out.println("Here's your TODO");
+        printTasks();
+    }
+
+    private ArrayList<Task> getShortlistedTasks(String instance) {
+        ArrayList<Task> shortlistedTasks = new ArrayList<>();
+        for (Task task: tasks) {
+            if (task.getDescription().contains(instance)) {
+                shortlistedTasks.add(task);
+            }
+        }
+        return shortlistedTasks;
+    }
+
+    private void printTasks() {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.printf("%d.%s\n", i + 1, tasks.get(i));
         }
@@ -35,9 +49,17 @@ public class TaskList {
      *
      * @return Size of the task list
      */
-    public static int getTaskListSize() {
+    public int getTaskListSize() {
         return tasks.size();
     }
+
+
+    public void addToList(String line) throws DukeException {
+        Parser parser = new Parser();
+        Task task = parser.getTaskFromLine(line);
+        tasks.add(task);
+    }
+
 
     /**
      * Marks specified task as done.
@@ -45,7 +67,7 @@ public class TaskList {
      *
      * @param task Task to be marked
      */
-    public static void markTaskAsDone(String task) {
+    public void markTaskAsDone(String task) {
         int taskNumber = Integer.parseInt(task);
         tasks.get(taskNumber - 1).setDone();
         System.out.println("I have marked your task as done!");
@@ -58,7 +80,7 @@ public class TaskList {
      *
      * @param task Task to be added
      */
-    public static void addToList(Task task) {
+    public void addToList(Task task) {
         tasks.add(task);
         System.out.println("Okay! I have added this:");
         System.out.printf("\t%s\n", task);
@@ -72,7 +94,7 @@ public class TaskList {
      * @param index Position of task in the task list
      * @return Task description
      */
-    public static String getLine(int index) {
+    public String getLine(int index) {
         return tasks.get(index).toString();
     }
 
@@ -81,7 +103,7 @@ public class TaskList {
      *
      * @param index Position of task in task list
      */
-    public static void deleteTask(String index) {
+    public void deleteTask(String index) {
         int taskNumber = Integer.parseInt(index);
         System.out.println("I have deleted this task!");
         System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
@@ -91,12 +113,12 @@ public class TaskList {
     }
 
     /**
-     * Update the task list based on user input
+     * Executes user's command
      *
      * @param line Line input by user
      * @throws DukeException If line is in incorrect format
      */
-    public static void updateTasks(String line) throws DukeException {
+    public void manageTask(String line) throws DukeException {
         Parser parser = new Parser();
         String command;
         try {
@@ -113,8 +135,13 @@ public class TaskList {
         } else if (command.equals("todo")) {
             addToList(new Todo(instance));
 
-        } else if (command.equals(("delete"))) {
+        } else if (command.equals("delete")) {
             deleteTask(instance);
+
+        } else if (command.equals("find")) {
+            System.out.println("Here are the matching tasks in your list:");
+            TaskList shortListedTasks = new TaskList(getShortlistedTasks(instance));
+            shortListedTasks.printTasks();
 
         } else if (command.equals("deadline")) {
             try {
@@ -137,4 +164,6 @@ public class TaskList {
             System.out.println("Whoops you may have typed a wrong command");
         }
     }
+
+
 }
