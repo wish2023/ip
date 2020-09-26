@@ -18,6 +18,9 @@ public class TaskList {
         }
     }
 
+    /**
+     * Prints every task in the task list
+     */
     public static void displayList() {
         System.out.println("Here's your TODO");
         for (int i = 0; i < tasks.size(); i++) {
@@ -25,16 +28,23 @@ public class TaskList {
         }
     }
 
-    public static void addToList(String line) throws DukeException {
-        Parser parser = new Parser();
-        Task task = parser.getTaskFromLine(line);
-        tasks.add(task);
-    }
 
+
+    /**
+     * Returns size of the task list
+     *
+     * @return Size of the task list
+     */
     public static int getTaskListSize() {
         return tasks.size();
     }
 
+    /**
+     * Marks specified task as done.
+     * Lets the user know specified task has been marked as done.
+     *
+     * @param task Task to be marked
+     */
     public static void markTaskAsDone(String task) {
         int taskNumber = Integer.parseInt(task);
         tasks.get(taskNumber - 1).setDone();
@@ -42,6 +52,12 @@ public class TaskList {
         System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
     }
 
+    /**
+     * Adds specified task to the task list
+     * Lets the user know specified task has been added to the task list
+     *
+     * @param task Task to be added
+     */
     public static void addToList(Task task) {
         tasks.add(task);
         System.out.println("Okay! I have added this:");
@@ -50,12 +66,23 @@ public class TaskList {
                 (tasks.size() == 1) ? "" : "s");
     }
 
+    /**
+     * Returns the task description at the specified position in task list
+     *
+     * @param index Position of task in the task list
+     * @return Task description
+     */
     public static String getLine(int index) {
         return tasks.get(index).toString();
     }
 
-    public static void deleteTask(String task) {
-        int taskNumber = Integer.parseInt(task);
+    /**
+     * Deletes the task at the specified position in the task list
+     *
+     * @param index Position of task in task list
+     */
+    public static void deleteTask(String index) {
+        int taskNumber = Integer.parseInt(index);
         System.out.println("I have deleted this task!");
         System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
         tasks.remove(taskNumber - 1);
@@ -63,6 +90,12 @@ public class TaskList {
                 (tasks.size() == 1)? "": "s");
     }
 
+    /**
+     * Update the task list based on user input
+     *
+     * @param line Line input by user
+     * @throws DukeException If line is in incorrect format
+     */
     public static void updateTasks(String line) throws DukeException {
         Parser parser = new Parser();
         String command;
