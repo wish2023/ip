@@ -18,11 +18,15 @@ public class Task {
         return description;
     }
 
+    /**
+     * Mark task as done
+     *
+     */
     public void setDone() {
         isDone = true;
     }
 
-    public String getStatusIcon() {
+    private String getStatusIcon() {
         return (isDone ? "\u2713" : "\u2718"); //return tick or X symbols
     }
 
