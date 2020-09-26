@@ -6,10 +6,10 @@ public class TaskList {
     private ArrayList<Task> tasks;
 
 
-
     public TaskList() {
         tasks = new ArrayList<>();
     }
+
 
     public TaskList(ArrayList<Task> taskList) {
         tasks = new ArrayList<>();
@@ -18,6 +18,7 @@ public class TaskList {
         }
     }
 
+
     /**
      * Prints every task in the task list
      */
@@ -25,6 +26,7 @@ public class TaskList {
         System.out.println("Here's your TODO");
         printTasks();
     }
+
 
     private ArrayList<Task> getShortlistedTasks(String instance) {
         ArrayList<Task> shortlistedTasks = new ArrayList<>();
@@ -36,12 +38,12 @@ public class TaskList {
         return shortlistedTasks;
     }
 
+
     private void printTasks() {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.printf("%d.%s\n", i + 1, tasks.get(i));
         }
     }
-
 
 
     /**
@@ -51,13 +53,6 @@ public class TaskList {
      */
     public int getTaskListSize() {
         return tasks.size();
-    }
-
-
-    public void addToList(String line) throws DukeException {
-        Parser parser = new Parser();
-        Task task = parser.getTaskFromLine(line);
-        tasks.add(task);
     }
 
 
@@ -74,6 +69,7 @@ public class TaskList {
         System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
     }
 
+
     /**
      * Adds specified task to the task list
      * Lets the user know specified task has been added to the task list
@@ -88,6 +84,7 @@ public class TaskList {
                 (tasks.size() == 1) ? "" : "s");
     }
 
+
     /**
      * Returns the task description at the specified position in task list
      *
@@ -97,6 +94,7 @@ public class TaskList {
     public String getLine(int index) {
         return tasks.get(index).toString();
     }
+
 
     /**
      * Deletes the task at the specified position in the task list
@@ -111,6 +109,7 @@ public class TaskList {
         System.out.printf("Now you have %d task%s in the list.\n", tasks.size(),
                 (tasks.size() == 1)? "": "s");
     }
+
 
     /**
      * Executes user's command
@@ -164,6 +163,5 @@ public class TaskList {
             System.out.println("Whoops you may have typed a wrong command");
         }
     }
-
 
 }
