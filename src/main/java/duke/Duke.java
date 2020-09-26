@@ -16,7 +16,7 @@ public class Duke {
 
 
 
-    public static void runDuke() throws DukeException {
+    private static void runDuke() throws DukeException {
         ui = new Ui();
         Scanner in = new Scanner(System.in);
         storage = new Storage(FILE_PATH, DIRECTORY_PATH);
