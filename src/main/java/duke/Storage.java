@@ -17,6 +17,13 @@ public class Storage {
         this.directoryPath = directoryPath;
     }
 
+    /**
+     * Returns a task list after reading from duke.txt
+     *
+     * @return Task list created
+     * @throws DukeException If file is not formatted correctly
+     * @throws FileNotFoundException If duke.txt is not found
+     */
     public static ArrayList<Task> load() throws DukeException, FileNotFoundException {
 
         ArrayList<Task> taskList = new ArrayList<>();
@@ -30,7 +37,7 @@ public class Storage {
         return taskList;
     }
 
-    public static void writeToFile(TaskList taskList) throws IOException {
+    private static void writeToFile(TaskList taskList) throws IOException {
         FileWriter filewriter = new FileWriter(filePath);
 
         for (int i = 0; i < taskList.getTaskListSize(); i++) {
@@ -41,6 +48,11 @@ public class Storage {
         filewriter.close();
     }
 
+    /**
+     * Saves the task list created into duke.txt
+     *
+     * @param taskList Task list created by user
+     */
     public static void save(TaskList taskList) {
         try {
             File directory = new File((directoryPath));
