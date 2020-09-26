@@ -1,9 +1,12 @@
 package duke;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TaskList {
     private ArrayList<Task> tasks;
+    ArrayList<String> commands = new ArrayList<String>
+            (Arrays.asList("todo", "deadline", "event", "done", "delete", "find"));
 
 
     public TaskList() {
@@ -16,6 +19,10 @@ public class TaskList {
         for (Task task: taskList) {
             tasks.add(task);
         }
+    }
+
+    private boolean isCommandValid(String command) {
+        return commands.contains(command);
     }
 
 
@@ -119,14 +126,21 @@ public class TaskList {
      */
     public void manageTask(String line) throws DukeException {
         Parser parser = new Parser();
-        String command;
-        try {
-            command = parser.getCommand(line);
-        } catch (DukeException e) {
-            System.out.println("Whoa! Please enter a command AND a task");
+        String command = parser.getCommand(line);
+        if (!isCommandValid(command)) {
+            System.out.println("I don't know what " + command + " means");
             return;
         }
-        String instance = parser.getInstance(line);
+
+        String instance;
+
+        try {
+            instance = parser.getInstance(line);
+        } catch (DukeException e) {
+            System.out.println("Whoa! Please don't leave the description empty");
+            return;
+        }
+
 
         if (command.equals("done")) {
             markTaskAsDone(instance);

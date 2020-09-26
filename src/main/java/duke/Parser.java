@@ -55,12 +55,17 @@ public class Parser {
      *
      * @param line Line containing command and instance
      * @return User's command to Duke
-     * @throws DukeException If user inputs a single word only
      */
-    public static String getCommand(String line) throws DukeException {
-        int dividerPosition = getDividerPosition(line);
+    public static String getCommand(String line) {
+        int dividerPosition;
+        String command;
+        try {
+            dividerPosition = getDividerPosition(line);
+            command = line.substring(0, dividerPosition);
+        } catch (DukeException e) {
+            command = line; // Line is only 1 word
+        }
 
-        String command = line.substring(0, dividerPosition);
         return command;
     }
 
@@ -69,6 +74,7 @@ public class Parser {
         dividerPosition = getIndexOfKeyword(line, " ");
         return dividerPosition;
     }
+
 
     /**
      * Returns the instance that a command relates to from user input
@@ -81,6 +87,10 @@ public class Parser {
         int dividerPosition = getDividerPosition(line);
 
         String instance = line.substring(dividerPosition + 1);
+        if (instance.length() == 0) {
+            throw new DukeException();
+        }
+
         return instance;
     }
 
