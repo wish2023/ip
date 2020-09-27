@@ -118,7 +118,6 @@ public class TaskList {
      * @param index Position of task in task list
      */
     public void deleteTask(String index) {
-        System.out.println("Hello");
         int taskNumber = Integer.parseInt(index) - 1;
         try {
             String deletedTask = "\t" + tasks.get(taskNumber);
