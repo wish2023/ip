@@ -1,4 +1,0 @@
-1. [T][✘] read book
-2. [D][✓] return book (by: please)
-3. [E][✘] project meeting (at: monday)
-4. [T][✓] cry about book too long
