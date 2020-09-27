@@ -30,7 +30,7 @@ public class TaskList {
      * Prints every task in the task list
      */
     public void displayList() {
-        System.out.println("Here's your TODO");
+        System.out.println("Here's your TASK LIST");
         printTasks();
     }
 
