@@ -70,10 +70,15 @@ public class TaskList {
      * @param task Task to be marked
      */
     public void markTaskAsDone(String task) {
-        int taskNumber = Integer.parseInt(task);
-        tasks.get(taskNumber - 1).setDone();
-        System.out.println("I have marked your task as done!");
-        System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
+        int taskNumber = Integer.parseInt(task) - 1;
+        try {
+            tasks.get(taskNumber).setDone();
+            System.out.println("I have marked your task as done!");
+            System.out.printf("\t%s\n", tasks.get(taskNumber));
+        } catch (IndexOutOfBoundsException e) {
+            printErrorMessage();
+        }
+
     }
 
 
@@ -87,6 +92,10 @@ public class TaskList {
         tasks.add(task);
         System.out.println("Okay! I have added this:");
         System.out.printf("\t%s\n", task);
+        printNumberOfTasks();
+    }
+
+    private void printNumberOfTasks() {
         System.out.printf("Now you have %d task%s in the list.\n", tasks.size(),
                 (tasks.size() == 1) ? "" : "s");
     }
@@ -109,12 +118,25 @@ public class TaskList {
      * @param index Position of task in task list
      */
     public void deleteTask(String index) {
-        int taskNumber = Integer.parseInt(index);
+        System.out.println("Hello");
+        int taskNumber = Integer.parseInt(index) - 1;
+        try {
+            String deletedTask = "\t" + tasks.get(taskNumber);
+            printDeleteMessage();
+            System.out.println(deletedTask);
+            tasks.remove(taskNumber);
+        } catch (IndexOutOfBoundsException e) {
+            printErrorMessage();
+        }
+        printNumberOfTasks();
+    }
+
+    private void printDeleteMessage() {
         System.out.println("I have deleted this task!");
-        System.out.printf("\t%s\n", tasks.get(taskNumber - 1));
-        tasks.remove(taskNumber - 1);
-        System.out.printf("Now you have %d task%s in the list.\n", tasks.size(),
-                (tasks.size() == 1)? "": "s");
+    }
+
+    private void printErrorMessage() {
+        System.out.println("You entered an invalid number");
     }
 
 
