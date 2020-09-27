@@ -11,11 +11,23 @@ public class Storage {
     private static String filePath;
     private static String directoryPath;
 
-
     public Storage(String filePath, String directoryPath) {
         this.filePath = filePath;
         this.directoryPath = directoryPath;
     }
+
+    private static void writeToFile(TaskList taskList) throws IOException {
+        FileWriter filewriter = new FileWriter(filePath);
+
+        for (int i = 0; i < taskList.getTaskListSize(); i++) {
+            String line = taskList.getLine(i);
+            filewriter.write((i + 1) + ". " + line + "\n");
+        }
+
+        filewriter.close();
+    }
+
+
 
     /**
      * Returns a task list after reading from duke.txt
@@ -37,16 +49,6 @@ public class Storage {
         return taskList;
     }
 
-    private static void writeToFile(TaskList taskList) throws IOException {
-        FileWriter filewriter = new FileWriter(filePath);
-
-        for (int i = 0; i < taskList.getTaskListSize(); i++) {
-            String line = taskList.getLine(i);
-            filewriter.write((i + 1) + ". " + line + "\n");
-        }
-
-        filewriter.close();
-    }
 
     /**
      * Saves the task list created into duke.txt

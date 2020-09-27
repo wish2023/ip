@@ -13,7 +13,6 @@ public class TaskList {
         tasks = new ArrayList<>();
     }
 
-
     public TaskList(ArrayList<Task> taskList) {
         tasks = new ArrayList<>();
         for (Task task: taskList) {
@@ -21,19 +20,22 @@ public class TaskList {
         }
     }
 
-    private boolean isCommandValid(String command) {
-        return commands.contains(command);
+    private void printNumberOfTasks() {
+        System.out.printf("Now you have %d task%s in the list.\n", tasks.size(),
+                (tasks.size() == 1) ? "" : "s");
     }
 
-
-    /**
-     * Prints every task in the task list
-     */
-    public void displayList() {
-        System.out.println("Here's your TASK LIST");
-        printTasks();
+    private void printDeleteMessage() {
+        System.out.println("I have deleted this task!");
     }
 
+    private void printErrorMessage() {
+        System.out.println("You entered an invalid number");
+    }
+
+    private boolean isCommandInvalid(String command) {
+        return !commands.contains(command);
+    }
 
     private ArrayList<Task> getShortlistedTasks(String instance) {
         ArrayList<Task> shortlistedTasks = new ArrayList<>();
@@ -45,11 +47,20 @@ public class TaskList {
         return shortlistedTasks;
     }
 
-
     private void printTasks() {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.printf("%d.%s\n", i + 1, tasks.get(i));
         }
+    }
+
+
+
+    /**
+     * Prints every task in the task list
+     */
+    public void displayList() {
+        System.out.println("Here's your TASK LIST");
+        printTasks();
     }
 
 
@@ -95,10 +106,7 @@ public class TaskList {
         printNumberOfTasks();
     }
 
-    private void printNumberOfTasks() {
-        System.out.printf("Now you have %d task%s in the list.\n", tasks.size(),
-                (tasks.size() == 1) ? "" : "s");
-    }
+
 
 
     /**
@@ -130,14 +138,6 @@ public class TaskList {
         printNumberOfTasks();
     }
 
-    private void printDeleteMessage() {
-        System.out.println("I have deleted this task!");
-    }
-
-    private void printErrorMessage() {
-        System.out.println("You entered an invalid number");
-    }
-
 
     /**
      * Executes user's command
@@ -147,7 +147,7 @@ public class TaskList {
     public void manageTask(String line) {
         Parser parser = new Parser();
         String command = parser.getCommand(line);
-        if (!isCommandValid(command)) {
+        if (isCommandInvalid(command)) {
             System.out.println("I don't know what " + command + " means");
             return;
         }

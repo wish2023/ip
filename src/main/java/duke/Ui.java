@@ -4,6 +4,15 @@ import java.util.Scanner;
 
 public class Ui {
 
+    private static void manageList(String line, TaskList taskList) throws DukeException {
+        taskList.manageTask(line);
+    }
+
+    private static void displayList(TaskList taskList) {
+        taskList.displayList();
+    }
+
+
 
     /**
      * Prints goodbye message
@@ -47,13 +56,6 @@ public class Ui {
         }
     }
 
-    private static void manageList(String line, TaskList taskList) throws DukeException {
-        taskList.manageTask(line);
-    }
-
-    private static void displayList(TaskList taskList) {
-        taskList.displayList();
-    }
 
     /**
      * Prints message when no prior task list is found
