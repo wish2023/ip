@@ -35,7 +35,7 @@ public class Duke {
     }
 
 
-    public static void main(String[] args) throws DukeException, FileNotFoundException {
+    public static void main(String[] args) throws DukeException {
         runDuke();
     }
 }

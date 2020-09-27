@@ -144,9 +144,8 @@ public class TaskList {
      * Executes user's command
      *
      * @param line Line input by user
-     * @throws DukeException If line is in incorrect format
      */
-    public void manageTask(String line) throws DukeException {
+    public void manageTask(String line) {
         Parser parser = new Parser();
         String command = parser.getCommand(line);
         if (!isCommandValid(command)) {

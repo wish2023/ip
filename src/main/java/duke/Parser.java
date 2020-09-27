@@ -8,7 +8,7 @@ public class Parser {
      *
      * @param line Line in duke.txt
      * @return Task the line refers to
-     * @throws DukeException If file is not formatted correctly
+     * @throws DukeException If file is in incorrect format
      */
     public static Task getTaskFromLine(String line) throws DukeException { // For file
         int taskTypePosition = getIndexOfKeyword(line, ". [");
