@@ -18,7 +18,7 @@ public class Ui {
      * Prints hello message
      */
     public static void printHello() {
-        System.out.println("Hey it's your favorite chatbot buddy!");
+        System.out.println("Hey it's your favorite chatbot Duke!");
         System.out.println("How can I assist you today?");
     }
 
