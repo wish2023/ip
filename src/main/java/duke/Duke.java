@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Duke {
     private static final String INITIALISE_MESSAGE = "initialising";
-    //private static ArrayList<Task> tasks = new ArrayList<>();
     private static final String FILE_PATH = "data/duke.txt";
     private static final String DIRECTORY_PATH = "data";
     private static Storage storage;
