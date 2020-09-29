@@ -180,7 +180,7 @@ public class TaskList {
             try {
                 Deadline deadline = parser.getDeadline(line);
                 addToList(deadline);
-            } catch (DukeException e) {
+            } catch (DukeException | StringIndexOutOfBoundsException e) {
                 System.out.println("Please follow the deadline format: deadline *task* /by *date*");
             }
 
@@ -189,7 +189,7 @@ public class TaskList {
             try {
                 Event event = parser.getEvent(line);
                 addToList(event);
-            } catch (DukeException e) {
+            } catch (DukeException | StringIndexOutOfBoundsException e) {
                 System.out.println("Please follow the event format: event *task* /at *date*");
             }
 

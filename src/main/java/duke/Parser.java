@@ -143,7 +143,7 @@ public class Parser {
      */
     public static Deadline getDeadline(String line) throws DukeException {
         int dividerPosition = getDividerPosition(line);
-        int byPosition = getIndexOfKeyword(line, BY_KEYWORD_INPUT);;
+        int byPosition = getIndexOfKeyword(line, BY_KEYWORD_INPUT);
         String deadlineTask = getTaskFromInput(line, dividerPosition, byPosition);
         String date = getDateFromInput(line, byPosition);
         return new Deadline(deadlineTask, date);
