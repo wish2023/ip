@@ -63,7 +63,7 @@ public class Parser {
      * @return Task the line refers to
      * @throws DukeException If file is in incorrect format
      */
-    public static Task getTaskFromLine(String line) throws DukeException { // For file
+    public static Task getTaskFromLine(String line) throws DukeException {
         int taskStartPosition = getIndexOfKeyword(line, TASK_START_KEYWORD);
         char taskType = getTaskTypeFromFile(line, taskStartPosition);
         char statusIcon = getStatusIconFromFile(line, taskStartPosition);

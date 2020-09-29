@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Ui {
 
-    private static void manageList(String line, TaskList taskList) throws DukeException {
+    private static void manageList(String line, TaskList taskList) {
         taskList.manageTask(line);
     }
 
